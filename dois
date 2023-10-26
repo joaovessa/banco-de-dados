@@ -1,0 +1,5 @@
+CREATE TRIGGER tg_mensagem_excluir_cliente 
+BEFORE DELETE ON Clientes
+FOR EACH ROW
+INSERT INTO Auditoria(mensagem)
+VALUES ('Tentaram excluir o usuário')
