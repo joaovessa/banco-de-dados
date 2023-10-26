@@ -1,0 +1,9 @@
+CREATE TRIGGER tg_tentativa_novo_nome 
+BEFORE UPDATE ON Clientes
+FOR EACH ROW
+ IF NEW.nome IS NULL OR NEW.nome = '' THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Client name cannot be empty or NULL';
+ELSE
+	INSERT INTO Auditoria (mensagem)
+	VALUES (CONCAT('Client name updated to: ', NEW.nome));
