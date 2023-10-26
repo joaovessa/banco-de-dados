@@ -1,0 +1,16 @@
+CREATE TRIGGER tg_atualização_estoque 
+AFTER INSERT ON Pedidos
+FOR EACH ROW    
+    
+DECLARE produto_estoque INT;
+
+    SELECT estoque INTO produto_estoque
+    FROM Produtos
+    WHERE id = NEW.produto_id;
+
+    UPDATE Produtos
+    SET estoque = product_stock - NEW.quantidade
+    WHERE id = NEW.produto_id;
+    IF produto_estoque - NEW.quantidade < 5 THEN
+        INSERT INTO Auditoria (mensagem)
+        VALUES ('Estoque do produto ' || NEW.produto_id || ' está abaixo de 5 unidades.'); 
