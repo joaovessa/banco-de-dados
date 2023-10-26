@@ -1,0 +1,6 @@
+
+CREATE TRIGGER tg_mensagem_novo_cliente 
+AFTER UPDATE ON Clientes
+FOR EACH ROW
+INSERT INTO Auditoria(mensagem,data_hora)
+VALUES ('novo cliente',now());
